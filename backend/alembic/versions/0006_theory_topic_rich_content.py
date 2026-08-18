@@ -46,23 +46,43 @@ def upgrade() -> None:
             {"content": _build_content_json(row.text, row.example, row.tip), "topic_id": row.id},
         )
 
-    with op.batch_alter_table("theory_topics", recreate="always") as batch_op:
-        batch_op.alter_column("content_json", nullable=False)
-        batch_op.drop_column("text")
-        batch_op.drop_column("example")
-        batch_op.drop_column("tip")
+    if bind.dialect.name == "sqlite":
+        with op.batch_alter_table("theory_topics", recreate="always") as batch_op:
+            batch_op.alter_column("content_json", existing_type=sa.JSON(), nullable=False)
+            batch_op.drop_column("text")
+            batch_op.drop_column("example")
+            batch_op.drop_column("tip")
+    else:
+        op.alter_column(
+            "theory_topics",
+            "content_json",
+            existing_type=sa.JSON(),
+            nullable=False,
+        )
+        op.drop_column("theory_topics", "text")
+        op.drop_column("theory_topics", "example")
+        op.drop_column("theory_topics", "tip")
 
     if "theory_concepts" in inspector.get_table_names():
         op.drop_table("theory_concepts")
 
 
 def downgrade() -> None:
-    with op.batch_alter_table("theory_topics", recreate="always") as batch_op:
-        batch_op.add_column(sa.Column("text", sa.Text(), nullable=False, server_default=""))
-        batch_op.add_column(sa.Column("example", sa.Text(), nullable=True))
-        batch_op.add_column(sa.Column("tip", sa.Text(), nullable=True))
-
     bind = op.get_bind()
+
+    if bind.dialect.name == "sqlite":
+        with op.batch_alter_table("theory_topics", recreate="always") as batch_op:
+            batch_op.add_column(sa.Column("text", sa.Text(), nullable=False, server_default=""))
+            batch_op.add_column(sa.Column("example", sa.Text(), nullable=True))
+            batch_op.add_column(sa.Column("tip", sa.Text(), nullable=True))
+    else:
+        op.add_column(
+            "theory_topics",
+            sa.Column("text", sa.Text(), nullable=False, server_default=""),
+        )
+        op.add_column("theory_topics", sa.Column("example", sa.Text(), nullable=True))
+        op.add_column("theory_topics", sa.Column("tip", sa.Text(), nullable=True))
+
     rows = bind.execute(sa.text("SELECT id, content_json FROM theory_topics")).fetchall()
     for row in rows:
         text = ""
@@ -95,8 +115,11 @@ def downgrade() -> None:
             {"text": text, "example": example, "tip": tip, "topic_id": row.id},
         )
 
-    with op.batch_alter_table("theory_topics", recreate="always") as batch_op:
-        batch_op.drop_column("content_json")
+    if bind.dialect.name == "sqlite":
+        with op.batch_alter_table("theory_topics", recreate="always") as batch_op:
+            batch_op.drop_column("content_json")
+    else:
+        op.drop_column("theory_topics", "content_json")
 
     op.create_table(
         "theory_concepts",
