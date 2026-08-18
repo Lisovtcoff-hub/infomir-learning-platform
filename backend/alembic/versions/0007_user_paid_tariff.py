@@ -23,10 +23,40 @@ def upgrade() -> None:
     user_columns = {col["name"] for col in inspector.get_columns("users")}
 
     if "paid_tariff_id" not in user_columns:
-        with op.batch_alter_table("users", recreate="always") as batch_op:
-            batch_op.add_column(sa.Column("paid_tariff_id", sa.Integer(), nullable=True))
-            batch_op.create_foreign_key("fk_users_paid_tariff_id_tariffs", "tariffs", ["paid_tariff_id"], ["id"], ondelete="SET NULL")
-            batch_op.create_index("ix_users_paid_tariff_id", ["paid_tariff_id"], unique=False)
+        if bind.dialect.name == "sqlite":
+            with op.batch_alter_table("users", recreate="always") as batch_op:
+                batch_op.add_column(sa.Column("paid_tariff_id", sa.Integer(), nullable=True))
+                batch_op.create_foreign_key(
+                    "fk_users_paid_tariff_id_tariffs",
+                    "tariffs",
+                    ["paid_tariff_id"],
+                    ["id"],
+                    ondelete="SET NULL",
+                )
+                batch_op.create_index(
+                    "ix_users_paid_tariff_id",
+                    ["paid_tariff_id"],
+                    unique=False,
+                )
+        else:
+            op.add_column(
+                "users",
+                sa.Column("paid_tariff_id", sa.Integer(), nullable=True),
+            )
+            op.create_foreign_key(
+                "fk_users_paid_tariff_id_tariffs",
+                "users",
+                "tariffs",
+                ["paid_tariff_id"],
+                ["id"],
+                ondelete="SET NULL",
+            )
+            op.create_index(
+                "ix_users_paid_tariff_id",
+                "users",
+                ["paid_tariff_id"],
+                unique=False,
+            )
 
     free_tariff_id = bind.execute(sa.text("SELECT id FROM tariffs WHERE code = 'free' LIMIT 1")).scalar_one_or_none()
     if free_tariff_id is None:
@@ -64,8 +94,23 @@ def downgrade() -> None:
     bind = op.get_bind()
     inspector = sa.inspect(bind)
     user_columns = {col["name"] for col in inspector.get_columns("users")}
-    if "paid_tariff_id" in user_columns:
+    if "paid_tariff_id" not in user_columns:
+        return
+
+    if bind.dialect.name == "sqlite":
         with op.batch_alter_table("users", recreate="always") as batch_op:
             batch_op.drop_index("ix_users_paid_tariff_id")
-            batch_op.drop_constraint("fk_users_paid_tariff_id_tariffs", type_="foreignkey")
+            batch_op.drop_constraint(
+                "fk_users_paid_tariff_id_tariffs",
+                type_="foreignkey",
+            )
             batch_op.drop_column("paid_tariff_id")
+        return
+
+    op.drop_index("ix_users_paid_tariff_id", table_name="users")
+    op.drop_constraint(
+        "fk_users_paid_tariff_id_tariffs",
+        "users",
+        type_="foreignkey",
+    )
+    op.drop_column("users", "paid_tariff_id")
