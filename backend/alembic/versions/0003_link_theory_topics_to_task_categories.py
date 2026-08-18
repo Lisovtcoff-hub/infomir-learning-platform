@@ -19,6 +19,18 @@ depends_on: str | Sequence[str] | None = None
 
 def upgrade() -> None:
     bind = op.get_bind()
+
+    # Alembic creates version_num as VARCHAR(32) by default. This project
+    # uses descriptive revision identifiers that can exceed that limit.
+    # PostgreSQL enforces the declared length, while SQLite does not.
+    if bind.dialect.name == "postgresql":
+        bind.execute(
+            sa.text(
+                "ALTER TABLE alembic_version "
+                "ALTER COLUMN version_num TYPE VARCHAR(128)"
+            )
+        )
+
     inspector = sa.inspect(bind)
     columns = {col["name"] for col in inspector.get_columns("theory_topics")}
     indexes = {idx["name"] for idx in inspector.get_indexes("theory_topics")}
