@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual envs
+.venv/
+.audit-venv/
+venv/
+
+# Environment files
+.env
+
+# SQLite
+*.sqlite3
+*.sqlite3-journal
+*.db
+
+# Build/cache artifacts
+*.log
+*.tmp
+*.bak
+*.dump
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local generated artifacts
+openapi_dump.json
+tmp_*.html
+text.txt
+backend/infomir.sqlite3.backup_before_cleanup_*
+backend/__pycache__/
+backend/**/__pycache__/
+backend/**/*.pyc
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.env.*
+!.env.example
+!deploy/.env.example
+.idea/
+dist/
+build/

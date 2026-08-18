@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ИнфоМир | Тренировка ВПР 8</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div id="siteHeaderMount"></div>
+<main class="page-main"><div class="container"><div class="breadcrumbs"><a href="index.html">Главная</a><span class="sep">></span><a href="vpr-8.html">ВПР 8 класс</a><span class="sep">></span><span class="current">Тренировочные задания</span></div>
+<section class="hero-block compact-hero"><h1 class="hero-title">Тренировочные задания ВПР 8 класс</h1><p class="hero-text">Выберите тип задания, настройте фильтры и решайте задания в удобном режиме.</p></section>
+<div id="practiceConfig" data-exam="vpr8" data-subject="informatics"></div>
+<section class="section practice-layout">
+  <aside class="card task-types-sidebar">
+    <h3 class="card-title">Типы заданий</h3>
+    <div id="typeList" class="type-list"></div>
+  </aside>
+  <div class="grid" style="gap:12px;">
+    <section class="card filters-panel">
+      <label>Сложность<select id="difficultyFilter"><option value="all">Все</option><option value="easy">Лёгкие</option><option value="medium">Средние</option><option value="hard">Сложные</option></select></label>
+      <label>Статус<select id="statusFilter"><option value="all">Все</option><option value="solved">Решённые</option><option value="unsolved">Нерешённые</option></select></label>
+      <label>Результат<select id="resultFilter"><option value="all">Все</option><option value="correct">Правильные</option><option value="wrong">С ошибкой</option></select></label>
+      <label>Поиск<input id="searchFilter" type="text" placeholder="Поиск по тексту или ID задания" /></label>
+      <button id="resetFilters" class="btn btn-ghost" type="button">Сбросить фильтры</button>
+    </section>
+
+    <section id="taskList" class="grid"></section>
+  </div>
+</section>
+</div></main>
+<div id="siteFooterMount"></div>
+<div class="modal" id="loginModal" aria-hidden="true"><div class="modal-dialog"><button class="modal-close" data-close-modal aria-label="Закрыть">×</button><h3>Вход</h3><form class="modal-form" id="loginForm"><label for="login-email">Email</label><input id="login-email" name="email" type="email" placeholder="Введите email" required /><label for="login-password">Пароль</label><input id="login-password" name="password" type="password" placeholder="Введите пароль" required /><button type="submit" class="btn btn-primary btn-full">Войти</button></form><p class="modal-switch">Нет аккаунта? <button class="link-btn" data-switch-modal="registerModal" type="button">Зарегистрироваться</button></p></div></div>
+<div class="modal" id="registerModal" aria-hidden="true"><div class="modal-dialog"><button class="modal-close" data-close-modal aria-label="Закрыть">×</button><h3>Регистрация</h3><form class="modal-form" id="registerForm"><label for="reg-name">Имя</label><input id="reg-name" name="name" type="text" placeholder="Введите имя" required /><label for="reg-last-name">Фамилия</label><input id="reg-last-name" name="last_name" type="text" placeholder="Введите фамилию" required /><label for="reg-class">Класс</label><select id="reg-class" name="grade" required><option value="7">7 класс</option><option value="8">8 класс</option><option value="9">9 класс</option></select><label for="reg-email">Email</label><input id="reg-email" name="email" type="email" placeholder="Введите email" required /><label for="reg-password">Пароль</label><input id="reg-password" name="password" type="password" placeholder="Введите пароль" required /><label for="reg-password-repeat">Повторите пароль</label><input id="reg-password-repeat" name="password_repeat" type="password" placeholder="Повторите пароль" required /><button type="submit" class="btn btn-primary btn-full">Зарегистрироваться</button></form><p class="modal-switch">Уже есть аккаунт? <button class="link-btn" data-switch-modal="loginModal" type="button">Войти</button></p></div></div>
+<button class="scroll-top-btn" id="scrollTopBtn" type="button" aria-label="Вернуться наверх">↑</button>
+<script src="/static/js/public/main.js"></script>
+<script src="/static/js/public/practice.js"></script>
+<script src="/static/js/public/layout.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

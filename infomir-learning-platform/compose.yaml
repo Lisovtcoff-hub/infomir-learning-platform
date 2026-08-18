@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: infomir
+      POSTGRES_USER: infomir
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a strong PostgreSQL password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U infomir -d infomir"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  infomir:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://infomir:${POSTGRES_PASSWORD}@db:5432/infomir
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY to a random value of at least 32 characters}
+      APP_ENV: production
+      DEBUG: "false"
+      CORS_ORIGINS: ${CORS_ORIGINS:?Set the public and admin HTTPS origins}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:?Set the public host names}
+      ADMIN_HOSTS: ${ADMIN_HOSTS:?Set the separate admin host name}
+      HEALTHCHECK_HOST: ${HEALTHCHECK_HOST:?Set the primary public host name}
+      PAYMENT_PROVIDER: manual
+      MANUAL_PAYMENT_INSTRUCTIONS: ${MANUAL_PAYMENT_INSTRUCTIONS:?Set real manual payment instructions}
+      ENABLE_DEV_PAYMENT_CONFIRMATION: "false"
+      TRUST_PROXY_HEADERS: "true"
+    read_only: true
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import os,urllib.request; r=urllib.request.Request('http://127.0.0.1:8000/api/health',headers={'Host':os.environ['HEALTHCHECK_HOST']}); urllib.request.urlopen(r,timeout=3)\""]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  postgres_data:

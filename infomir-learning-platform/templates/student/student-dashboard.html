@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <title>ИнфоМир | Личный кабинет</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div id="siteHeaderMount"></div>
+
+<main class="page-main student-dashboard-page">
+  <div class="container">
+    <section class="dashboard-grid">
+      <article class="card dashboard-hero">
+        <div>
+          <h1 class="hero-title">Личный кабинет ученика</h1>
+          <p class="hero-text">Добро пожаловать, <span data-student-fullname-large>Арина Смирнова</span> • <span data-student-class-large>8 класс</span></p>
+          <form class="teacher-form teacher-form-inline" id="studentTeacherConnectForm" data-student-access-row>
+            <label class="teacher-field teacher-field-grow" for="studentTeacherCode">
+              <span>Код учителя</span>
+              <input id="studentTeacherCode" name="invite_code" maxlength="16" placeholder="T-12AB34CD56EF" required />
+            </label>
+            <button class="btn btn-primary teacher-form-btn" type="submit">Подключиться</button>
+          </form>
+          <div data-student-connection-row hidden>
+            <p class="student-id-row">
+              <span class="student-id-label">Группа:</span>
+              <span class="task-badge student-id-badge" data-student-group-title>—</span>
+            </p>
+            <p class="student-id-row">
+              <span class="student-id-label">Учитель:</span>
+              <span class="task-badge student-id-badge" data-student-teacher-name>—</span>
+            </p>
+            <button class="btn btn-ghost" id="studentTeacherDisconnectBtn" type="button">Отключиться от учителя</button>
+          </div>
+          <p class="dashboard-subtext">Ваш тариф: <span data-user-tariff>...</span></p>
+        </div>
+        <div class="hero-edu-illustration" aria-hidden="true">
+          <img src="/static/images/laptop.svg" alt="" />
+          <span class="edu-cap">🎓</span>
+        </div>
+      </article>
+
+      <article class="card stats-card">
+        <h2 class="card-title">Статистика</h2>
+        <div class="stats-grid">
+          <div class="mini-metric"><strong data-stat-topics>0</strong><span>Пройдено тем</span></div>
+          <div class="mini-metric"><strong data-stat-tasks>0</strong><span>Решено заданий</span></div>
+          <div class="mini-metric"><strong data-stat-grade>0.0</strong><span>Прогноз оценки</span></div>
+          <div class="mini-metric"><strong data-stat-attempts>0</strong><span>Попыток</span></div>
+        </div>
+      </article>
+
+      <article class="card recommended-card">
+        <h3 class="card-title">Рекомендуемые темы</h3>
+        <div class="rec-grid">
+          <div class="rec-item"><p>Алгоритмы и исполнители</p><small>60%</small><div class="bar rec-bar"><span style="width:60%"></span></div></div>
+          <div class="rec-item"><p>Программирование</p><small>45%</small><div class="bar rec-bar"><span style="width:45%"></span></div></div>
+          <div class="rec-item"><p>Базы данных</p><small>0%</small><div class="bar rec-bar"><span style="width:0%"></span></div></div>
+        </div>
+      </article>
+
+      <article class="card progress-card" data-progress-card="main">
+        <h3 class="card-title" data-progress-title>Подготовка к ВПР</h3>
+        <p class="progress-number" data-progress-number>0%</p>
+        <div class="bar"><span data-progress-bar style="width:0%"></span></div>
+        <p class="card-text" data-progress-text>Пока нет данных</p>
+        <p class="card-text" data-weak-topic-text>Слабая тема: пока нет данных</p>
+        <button class="btn btn-primary" type="button">Продолжить</button>
+      </article>
+
+      <article class="card task-list-card">
+        <h3 class="card-title">Последние результаты</h3>
+        <ul class="simple-list result-list" id="dashboardRecentResults">
+          <li><span>Нет данных по попыткам</span></li>
+        </ul>
+        <div class="dashboard-history-actions">
+          <button class="btn btn-ghost" type="button" data-open-modal="attemptHistoryModal">История</button>
+        </div>
+      </article>
+
+      <article class="card leaderboard-card">
+        <div class="leaderboard-title-row">
+          <h3 class="card-title">Рейтинг / Лидерборд</h3>
+          <span class="leaderboard-info-wrap" tabindex="0" aria-label="Как считаются баллы рейтинга">
+            <span class="leaderboard-info-btn">i</span>
+            <span class="leaderboard-tooltip">Как считаются баллы:<br><br>1) Берётся средний процент по завершённым попыткам (0-100).<br><br>2) Добавляется бонус за активность: +2 балла за каждую завершённую попытку, максимум +20.<br><br>3) Добавляется бонус за качество: +4 балла при среднем проценте от 60, +7 от 70, +10 от 85.<br><br>Формула: рейтинг = средний процент + бонус активности + бонус качества.<br><br>Если баллы равны, выше тот, у кого больше средний процент. Если и он равен, выше тот, у кого больше завершённых попыток.<br><br>«Топ за всё время» считает все попытки, «Топ за неделю» — только попытки за последние 7 дней.</span>
+          </span>
+        </div>
+        <p class="leaderboard-place" data-leaderboard-place>Вы на 1 месте из 1</p>
+        <div class="leaderboard-columns">
+          <h4>Топ за все время</h4>
+          <ul class="simple-list leaderboard-list" data-leaderboard-overall-top>
+            <li><span>Нет данных</span></li>
+          </ul>
+          <h4>Топ за неделю</h4>
+          <ul class="simple-list leaderboard-list" data-leaderboard-weekly-top>
+            <li><span>Нет данных</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="card achievements-card">
+        <div class="leaderboard-title-row">
+          <h3 class="card-title">Достижения</h3>
+          <span class="leaderboard-info-wrap" tabindex="0" aria-label="Невыполненные достижения">
+            <span class="leaderboard-info-btn">i</span>
+            <span class="leaderboard-tooltip" data-achievements-tooltip>Загрузка...</span>
+          </span>
+        </div>
+        <div class="badge-row" id="dashboardAchievements">
+          <span class="ach-badge blue">Загрузка...</span>
+        </div>
+      </article>
+
+      <article class="card week-chart-card">
+        <h3 class="card-title">Активность за неделю</h3>
+        <div class="week-chart" id="dashboardWeekChart" aria-hidden="true"></div>
+      </article>
+    </section>
+  </div>
+</main>
+
+<div class="modal dashboard-history-modal" id="attemptHistoryModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <button class="modal-close" data-close-modal aria-label="Закрыть">×</button>
+    <h3>История попыток</h3>
+    <ul class="simple-list result-list dashboard-history-list" id="dashboardAttemptHistoryList">
+      <li><span>Нет данных по попыткам</span></li>
+    </ul>
+  </div>
+</div>
+
+<div id="siteFooterMount"></div>
+
+<script src="/static/js/student/main.js"></script>
+<script src="/static/js/student/student-dashboard.js"></script>
+<script src="/static/js/student/layout.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,57 @@
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="/templates/public/index.html" aria-label="На главную">
+      <span class="brand-logo"><img src="/static/images/logo.svg" alt="Логотип ИнфоМир" /></span>
+      <span>ИнфоМир</span>
+    </a>
+    <button class="burger" id="burgerBtn" aria-expanded="false" aria-label="Открыть меню">☰</button>
+    <nav class="nav" id="mainNav">
+      <ul class="menu">
+        <li class="menu-item has-dropdown">
+          <a href="/templates/public/theory.html" data-nav="theory">Теория</a>
+          <button class="dropdown-toggle" aria-label="Подменю Теория">▾</button>
+          <ul class="dropdown">
+            <li><a href="/templates/public/theory-7.html">7 класс</a></li>
+            <li><a href="/templates/public/theory-8.html">8 класс</a></li>
+            <li><a href="/templates/public/theory-9.html">9 класс</a></li>
+          </ul>
+        </li>
+        <li class="menu-item has-dropdown">
+          <a href="/templates/public/vpr.html" data-nav="vpr">ВПР</a>
+          <button class="dropdown-toggle" aria-label="Подменю ВПР">▾</button>
+          <ul class="dropdown">
+            <li><a href="/templates/public/vpr-7.html">7 класс</a></li>
+            <li><a href="/templates/public/vpr-8.html">8 класс</a></li>
+          </ul>
+        </li>
+        <li class="menu-item"><a href="/templates/public/oge.html" data-nav="oge">ОГЭ</a></li>
+        <li class="menu-item"><a href="/templates/public/about.html" data-nav="about">О нас</a></li>
+        <li class="menu-item"><a href="/templates/public/tariffs.html" data-nav="tariffs">Тарифы</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button id="themeToggle" class="icon-btn" aria-label="Переключить тему">☾</button>
+
+        <div data-auth-guest>
+          <button class="btn btn-ghost" data-open-modal="loginModal">Войти</button>
+          <button class="btn btn-primary" data-open-modal="registerModal">Регистрация</button>
+        </div>
+
+        <div class="profile-menu-wrap" data-auth-user hidden>
+          <button class="profile-chip" type="button" data-profile-toggle aria-expanded="false" aria-label="Профиль ученика">
+            <span class="profile-avatar" data-auth-avatar>У</span>
+            <span class="profile-text">
+              <strong data-auth-fullname>Ученик</strong>
+              <small data-auth-grade>Класс не указан</small>
+            </span>
+            <span class="profile-caret">▾</span>
+          </button>
+          <div class="profile-dropdown" data-profile-menu>
+            <a href="/templates/student/student-dashboard.html" data-profile-cabinet-link>Личный кабинет</a>
+            <a href="/templates/student/student-settings.html" data-profile-settings-link>Настройки</a>
+            <a href="#" data-logout-link>Выход</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>

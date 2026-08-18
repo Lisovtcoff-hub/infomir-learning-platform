@@ -1,0 +1,50 @@
+limit_req_zone $binary_remote_addr zone=infomir_api:10m rate=10r/s;
+
+server {
+    listen 443 ssl http2;
+    server_name infomir.example.com;
+    client_max_body_size 1m;
+
+    ssl_certificate /etc/letsencrypt/live/infomir.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/infomir.example.com/privkey.pem;
+
+    location /api/auth/ {
+        limit_req zone=infomir_api burst=10 nodelay;
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    server_name admin.infomir.example.com;
+    client_max_body_size 1m;
+
+    ssl_certificate /etc/letsencrypt/live/admin.infomir.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/admin.infomir.example.com/privkey.pem;
+
+    # Restrict this host further by VPN or an office IP allowlist when possible.
+    location / {
+        limit_req zone=infomir_api burst=10 nodelay;
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+    }
+}
+
+server {
+    listen 80;
+    server_name infomir.example.com admin.infomir.example.com;
+    return 301 https://$host$request_uri;
+}
+

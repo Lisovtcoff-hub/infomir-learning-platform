@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <title>ИнфоМир | О нас</title>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div id="siteHeaderMount"></div>
+<main class="page-main"><div class="container"><section class="hero-block compact-hero"><div class="hero-grid"><div><h1 class="hero-title">О платформе ИнфоМир</h1><p class="hero-text">ИнфоМир - образовательная платформа для системной подготовки к ВПР и ОГЭ по информатике.</p><ul class="hero-points"><li>Материалы по классам</li><li>Практика с понятной структурой</li><li>Понятный и аккуратный интерфейс</li></ul></div><img class="hero-illustration" src="/static/images/laptop.svg" alt="О платформе" /></div></section>
+<section class="section"><div class="grid grid-3"><article class="card"><div class="card-icon"><img src="/static/images/target.svg" alt="Наша цель" /></div><h3 class="card-title">Наша цель</h3><p class="card-text">Помочь каждому ученику уверенно подготовиться к экзаменам и достигнуть высокого результата.</p></article><article class="card"><div class="card-icon"><img src="/static/images/user.svg" alt="Кому подходит" /></div><h3 class="card-title">Кому подходит</h3><p class="card-text">Ученикам 7-9 классов, родителям и преподавателям, которым важен понятный план подготовки.</p></article><article class="card"><div class="card-icon"><img src="/static/images/shield.svg" alt="Преимущества" /></div><h3 class="card-title">Преимущества</h3><p class="card-text">Актуальный контент, удобная навигация, регулярные обновления и поддержка в подготовке.</p></article></div></section>
+<section class="section hero-block contact-box"><img src="/static/images/checklist.svg" alt="Контакты" /><div><h2 class="section-title">Есть вопросы или предложения?</h2><p class="section-subtitle">Напишите нам: <a href="mailto:support@example.com">support@example.com</a></p></div></section></div></main>
+<div id="siteFooterMount"></div>
+<div class="modal" id="loginModal" aria-hidden="true"><div class="modal-dialog"><button class="modal-close" data-close-modal aria-label="Закрыть">×</button><h3>Вход</h3><form class="modal-form" id="loginForm"><label for="login-email">Email</label><input id="login-email" name="email" type="email" placeholder="Введите email" required /><label for="login-password">Пароль</label><input id="login-password" name="password" type="password" placeholder="Введите пароль" required /><button type="submit" class="btn btn-primary btn-full">Войти</button></form><p class="modal-switch">Нет аккаунта? <button class="link-btn" data-switch-modal="registerModal" type="button">Зарегистрироваться</button></p></div></div>
+<div class="modal" id="registerModal" aria-hidden="true"><div class="modal-dialog"><button class="modal-close" data-close-modal aria-label="Закрыть">×</button><h3>Регистрация</h3><form class="modal-form" id="registerForm"><label for="reg-name">Имя</label><input id="reg-name" name="name" type="text" placeholder="Введите имя" required /><label for="reg-last-name">Фамилия</label><input id="reg-last-name" name="last_name" type="text" placeholder="Введите фамилию" required /><label for="reg-class">Класс</label><select id="reg-class" name="grade" required><option value="7">7 класс</option><option value="8">8 класс</option><option value="9">9 класс</option></select><label for="reg-email">Email</label><input id="reg-email" name="email" type="email" placeholder="Введите email" required /><label for="reg-password">Пароль</label><input id="reg-password" name="password" type="password" placeholder="Введите пароль" required /><label for="reg-password-repeat">Повторите пароль</label><input id="reg-password-repeat" name="password_repeat" type="password" placeholder="Повторите пароль" required /><button type="submit" class="btn btn-primary btn-full">Зарегистрироваться</button></form><p class="modal-switch">Уже есть аккаунт? <button class="link-btn" data-switch-modal="loginModal" type="button">Войти</button></p></div></div>
+<button class="scroll-top-btn" id="scrollTopBtn" type="button" aria-label="Вернуться наверх">↑</button>
+<script src="/static/js/public/main.js"></script>
+<script src="/static/js/public/layout.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+

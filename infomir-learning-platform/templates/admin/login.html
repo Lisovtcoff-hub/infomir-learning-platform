@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Вход в админку Infomir</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <main class="auth-page">
+    <section class="auth-card">
+      <h1>Админка Infomir</h1>
+      <p>Вход в панель управления</p>
+      <form id="adminLoginForm" class="auth-form">
+        <label>Email администратора
+          <input type="email" name="login" autocomplete="username" required />
+        </label>
+        <label>Пароль
+          <input type="password" name="password" autocomplete="current-password" required />
+        </label>
+        <button type="submit" class="btn btn-primary">Войти</button>
+      </form>
+      <p id="adminLoginMsg"></p>
+    </section>
+  </main>
+  <script src="/static/js/admin/app.js"></script>
+</body>
+</html>

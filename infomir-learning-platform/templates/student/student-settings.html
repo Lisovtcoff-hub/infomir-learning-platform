@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <title>ИнфоМир | Настройки пользователя</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div id="siteHeaderMount"></div>
+
+<main class="page-main student-settings-page">
+  <div class="container settings-container">
+    <section class="settings-intro">
+      <h1 class="settings-title">Настройки пользователя</h1>
+      <p class="settings-subtitle">Измените личные данные профиля ученика</p>
+      <a class="btn btn-ghost back-link" href="student-dashboard.html">Назад в личный кабинет</a>
+    </section>
+
+    <section class="card settings-card">
+      <div class="settings-grid">
+        <aside class="settings-profile">
+          <div class="settings-profile-avatar" data-student-avatar-large>А</div>
+          <h2 class="settings-profile-name" data-student-fullname-large>Арина Смирнова</h2>
+          <p class="settings-profile-class" data-student-class-large>8 класс</p>
+          <p class="settings-profile-role">Ученик</p>
+          <button id="changeAvatarBtn" class="btn btn-ghost" type="button">Изменить аватар</button>
+          <input id="avatarFileInput" type="file" accept="image/*" hidden />
+        </aside>
+
+        <div class="settings-form-wrap">
+          <h2 class="card-title">Личные данные</h2>
+          <form id="studentSettingsForm" class="settings-form" novalidate>
+            <label for="firstName">Имя</label>
+            <input id="firstName" name="firstName" type="text" value="Арина" autocomplete="given-name" />
+            <p class="field-error" data-error-for="firstName" aria-live="polite"></p>
+
+            <label for="lastName">Фамилия</label>
+            <input id="lastName" name="lastName" type="text" value="Смирнова" autocomplete="family-name" />
+            <p class="field-error" data-error-for="lastName" aria-live="polite"></p>
+
+            <label for="studentClass">Класс</label>
+            <select id="studentClass" name="studentClass">
+              <option value="7 класс">7 класс</option>
+              <option value="8 класс" selected>8 класс</option>
+              <option value="9 класс">9 класс</option>
+            </select>
+
+            <label for="studentEmail">Email</label>
+            <input id="studentEmail" name="studentEmail" type="email" value="" readonly />
+
+            <p id="settingsSuccessMsg" class="settings-success" aria-live="polite"></p>
+
+            <div class="settings-actions">
+              <button id="saveSettingsBtn" class="btn btn-primary" type="submit">Сохранить изменения</button>
+              <button id="cancelSettingsBtn" class="btn btn-ghost" type="button">Отменить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero-block section">
+      <h2 class="card-title">Смена пароля</h2>
+      <p class="card-text">Для безопасности подтвердите текущий пароль и задайте новый.</p>
+      <form id="passwordChangeForm" class="settings-form" novalidate>
+        <label for="oldPassword">Старый пароль</label>
+        <input id="oldPassword" name="oldPassword" type="password" autocomplete="current-password" required />
+
+        <label for="newPassword">Новый пароль</label>
+        <input id="newPassword" name="newPassword" type="password" autocomplete="new-password" required />
+
+        <label for="confirmNewPassword">Подтверждение нового пароля</label>
+        <input id="confirmNewPassword" name="confirmNewPassword" type="password" autocomplete="new-password" required />
+
+        <p id="passwordChangeMsg" class="settings-success" aria-live="polite"></p>
+        <div class="settings-actions">
+          <button id="savePasswordBtn" class="btn btn-primary" type="submit">Изменить пароль</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="hero-block section">
+      <h2 class="card-title">Прогресс тем</h2>
+      <p class="card-text">Если нужно начать изучение заново, можно очистить отметки о пройденных темах.</p>
+      <div class="settings-actions">
+        <button id="resetTheoryProgressBtn" class="btn btn-ghost" type="button">Сбросить пройденные темы</button>
+      </div>
+      <p id="resetTheoryProgressMsg" class="settings-success" aria-live="polite"></p>
+    </section>
+
+  </div>
+</main>
+
+<div id="siteFooterMount"></div>
+
+<script src="/static/js/student/main.js"></script>
+<script src="/static/js/student/student-settings.js"></script>
+<script src="/static/js/student/layout.js"></script>
+</body>
+</html>
+

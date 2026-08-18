@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+  <title>ИнфоМир | Кабинет учителя</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div id="siteHeaderMount"></div>
+
+<main class="page-main">
+  <div class="container">
+    <section class="card" style="margin-bottom: 16px;">
+      <h1 class="hero-title">Кабинет учителя</h1>
+      <p class="hero-text">Управление группами и учениками.</p>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="card teacher-stats-hero">
+        <div>
+          <h2 class="card-title">Сводка по подключенным ученикам</h2>
+          <p class="card-text">Показатели рассчитываются по ученикам, добавленным в ваши группы.</p>
+        </div>
+        <div class="teacher-stats-grid">
+          <div class="mini-metric">
+            <strong id="teacherStatStudents">0</strong>
+            <span>Учеников</span>
+          </div>
+          <div class="mini-metric">
+            <strong id="teacherStatAverage">—</strong>
+            <span>Средний балл</span>
+          </div>
+          <div class="mini-metric">
+            <button id="teacherStatEarningsBtn" type="button" class="task-badge student-id-badge" data-open-modal="teacherEarningsModal" style="border:none;cursor:pointer;">
+              <strong id="teacherStatEarnings">0 ₽</strong>
+            </button>
+            <span id="teacherCommissionLabel">Заработано (20%)</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card teacher-action-card">
+        <h2 class="card-title">Создать группу</h2>
+        <form id="teacherCreateGroupForm" class="teacher-form teacher-form-inline">
+          <label class="teacher-field teacher-field-grow" for="teacherGroupTitle">
+            <span>Название группы</span>
+            <input id="teacherGroupTitle" name="title" type="text" placeholder="Например: 8А информатика" required />
+          </label>
+          <button class="btn btn-primary teacher-form-btn" type="submit">Создать</button>
+        </form>
+      </article>
+
+      <article class="card teacher-action-card">
+        <h2 class="card-title">Код подключения учеников</h2>
+        <p class="card-text">Отправьте ученику этот код. Он вводит его в своём кабинете и подключается самостоятельно.</p>
+        <button class="task-badge student-id-badge" id="teacherInviteCode" type="button" data-copy-id>Загрузка...</button>
+      </article>
+
+      <article class="card teacher-students-card">
+        <h2 class="card-title">Ученики</h2>
+        <ul class="simple-list" id="teacherStudentsList">
+          <li><span>Загрузка...</span></li>
+        </ul>
+      </article>
+    </section>
+  </div>
+</main>
+
+<div class="modal dashboard-history-modal" id="teacherEarningsModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <button class="modal-close" data-close-modal aria-label="Закрыть">×</button>
+    <h3>История начислений</h3>
+    <div class="teacher-earnings-summary" id="teacherEarningsSummary">
+      <div class="mini-metric">
+        <strong id="teacherEarningsTotal">0 ₽</strong>
+        <span>Всего заработано</span>
+      </div>
+      <div class="mini-metric">
+        <strong id="teacherEarningsBalance">0 ₽</strong>
+        <span>Текущий баланс</span>
+      </div>
+      <div class="mini-metric teacher-earnings-action">
+        <button class="btn btn-primary" type="button" id="teacherWithdrawBtn">Вывести</button>
+        <span>Вывод средств</span>
+      </div>
+    </div>
+    <ul class="simple-list result-list dashboard-history-list" id="teacherEarningsHistoryList">
+      <li><span>Загрузка...</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="modal" id="teacherNoticeModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <button class="modal-close" type="button" data-notice-close aria-label="Закрыть">×</button>
+    <h3 id="teacherNoticeTitle">Уведомление</h3>
+    <p class="card-text" id="teacherNoticeText">Сообщение</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" type="button" id="teacherNoticeOkBtn">Ок</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="teacherGroupEditModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <button class="modal-close" type="button" data-group-modal-close aria-label="Закрыть">×</button>
+    <h3>Переименовать группу</h3>
+    <form id="teacherGroupEditForm" class="modal-form">
+      <label for="teacherGroupEditTitle">Новое название</label>
+      <input id="teacherGroupEditTitle" type="text" maxlength="120" required />
+      <button class="btn btn-primary" type="submit">Сохранить</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="teacherGroupDeleteModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <button class="modal-close" type="button" data-group-modal-close aria-label="Закрыть">×</button>
+    <h3>Удалить группу</h3>
+    <p class="card-text" id="teacherGroupDeleteText">Подтвердите удаление группы.</p>
+    <div class="hero-actions">
+      <button class="btn btn-ghost" type="button" id="teacherGroupDeleteCancel">Отмена</button>
+      <button class="btn btn-danger" type="button" id="teacherGroupDeleteConfirm">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<div id="siteFooterMount"></div>
+<script src="/static/js/teacher/main.js"></script>
+<script src="/static/js/teacher/dashboard.js"></script>
+<script src="/static/js/teacher/layout.js"></script>
+</body>
+</html>
+
+
+
+
