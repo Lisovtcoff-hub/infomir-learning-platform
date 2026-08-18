@@ -58,25 +58,33 @@ def upgrade() -> None:
                 unique=False,
             )
 
-    free_tariff_id = bind.execute(sa.text("SELECT id FROM tariffs WHERE code = 'free' LIMIT 1")).scalar_one_or_none()
+    free_tariff_id = bind.execute(
+        sa.text("SELECT id FROM tariffs WHERE code = 'free' LIMIT 1")
+    ).scalar_one_or_none()
+
     if free_tariff_id is None:
-        bind.execute(
-            sa.text(
-                """
-                INSERT INTO tariffs (code, title, price, description, features_json, is_active)
-                VALUES (:code, :title, :price, :description, :features_json, :is_active)
-                """
-            ),
-            {
-                "code": "free",
-                "title": "Бесплатный",
-                "price": 0,
-                "description": "Базовый доступ",
-                "features_json": '["Базовый доступ"]',
-                "is_active": 1,
-            },
+        tariffs = sa.table(
+            "tariffs",
+            sa.column("code", sa.String()),
+            sa.column("title", sa.String()),
+            sa.column("price", sa.Numeric(10, 2)),
+            sa.column("description", sa.Text()),
+            sa.column("features_json", sa.JSON()),
+            sa.column("is_active", sa.Boolean()),
         )
-        free_tariff_id = bind.execute(sa.text("SELECT id FROM tariffs WHERE code = 'free' LIMIT 1")).scalar_one()
+        bind.execute(
+            sa.insert(tariffs).values(
+                code="free",
+                title="Бесплатный",
+                price=0,
+                description="Базовый доступ",
+                features_json=["Базовый доступ"],
+                is_active=True,
+            )
+        )
+        free_tariff_id = bind.execute(
+            sa.text("SELECT id FROM tariffs WHERE code = 'free' LIMIT 1")
+        ).scalar_one()
 
     bind.execute(
         sa.text(
