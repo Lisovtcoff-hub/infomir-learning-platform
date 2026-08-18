@@ -23,21 +23,61 @@ def upgrade() -> None:
     indexes = {idx["name"] for idx in inspector.get_indexes("theory_topics")}
     constraints = {uc["name"] for uc in inspector.get_unique_constraints("theory_topics")}
 
-    # Remove legacy grade index before batch copy (SQLite).
     if "ix_theory_topics_grade" in indexes:
         op.drop_index("ix_theory_topics_grade", table_name="theory_topics")
 
-    with op.batch_alter_table("theory_topics", recreate="always") as batch_op:
-        if "uq_theory_topics_grade_slug" in constraints:
-            batch_op.drop_constraint("uq_theory_topics_grade_slug", type_="unique")
-        batch_op.drop_column("grade")
-        batch_op.drop_column("title")
-        batch_op.create_unique_constraint("uq_theory_topics_slug", ["slug"])
+    if bind.dialect.name == "sqlite":
+        # SQLite cannot drop columns and constraints directly, so recreate the table.
+        with op.batch_alter_table("theory_topics", recreate="always") as batch_op:
+            if "uq_theory_topics_grade_slug" in constraints:
+                batch_op.drop_constraint("uq_theory_topics_grade_slug", type_="unique")
+            batch_op.drop_column("grade")
+            batch_op.drop_column("title")
+            batch_op.create_unique_constraint("uq_theory_topics_slug", ["slug"])
+        return
+
+    # PostgreSQL supports these operations directly. Recreating the table would
+    # temporarily drop its primary key and break foreign-key dependencies.
+    if "uq_theory_topics_grade_slug" in constraints:
+        op.drop_constraint(
+            "uq_theory_topics_grade_slug",
+            "theory_topics",
+            type_="unique",
+        )
+    op.drop_column("theory_topics", "grade")
+    op.drop_column("theory_topics", "title")
+    op.create_unique_constraint(
+        "uq_theory_topics_slug",
+        "theory_topics",
+        ["slug"],
+    )
 
 
 def downgrade() -> None:
-    with op.batch_alter_table("theory_topics", recreate="always") as batch_op:
-        batch_op.add_column(sa.Column("grade", sa.Integer(), nullable=True))
-        batch_op.add_column(sa.Column("title", sa.String(length=255), nullable=True))
-        batch_op.drop_constraint("uq_theory_topics_slug", type_="unique")
-        batch_op.create_unique_constraint("uq_theory_topics_grade_slug", ["grade", "slug"])
+    bind = op.get_bind()
+
+    if bind.dialect.name == "sqlite":
+        with op.batch_alter_table("theory_topics", recreate="always") as batch_op:
+            batch_op.add_column(sa.Column("grade", sa.Integer(), nullable=True))
+            batch_op.add_column(sa.Column("title", sa.String(length=255), nullable=True))
+            batch_op.drop_constraint("uq_theory_topics_slug", type_="unique")
+            batch_op.create_unique_constraint(
+                "uq_theory_topics_grade_slug",
+                ["grade", "slug"],
+            )
+        return
+
+    op.add_column(
+        "theory_topics",
+        sa.Column("grade", sa.Integer(), nullable=True),
+    )
+    op.add_column(
+        "theory_topics",
+        sa.Column("title", sa.String(length=255), nullable=True),
+    )
+    op.drop_constraint("uq_theory_topics_slug", "theory_topics", type_="unique")
+    op.create_unique_constraint(
+        "uq_theory_topics_grade_slug",
+        "theory_topics",
+        ["grade", "slug"],
+    )
