@@ -1,6 +1,6 @@
 # Infomir Learning Platform
 
-[![CI](https://github.com/Lisovtcoff-hub/infomir-learning-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Lisovtcoff-hub/infomir-learning-platform/actions/workflows/ci.yml)
+[![CI](https://github.com/lisovcoff/infomir-learning-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/lisovcoff/infomir-learning-platform/actions/workflows/ci.yml)
 
 A server-rendered learning platform for Russian school exams, including VPR and OGE preparation. It combines study materials, practice tasks, timed exam variants, student progress tracking, teacher groups, subscriptions, and a separate administration interface.
 
@@ -104,4 +104,4 @@ The project is a portfolio-oriented implementation of a multi-role learning plat
 
 Sergey Inozemtsev — Python backend developer
 
-GitHub: https://github.com/Lisovtcoff-hub
+GitHub: https://github.com/lisovcoff
