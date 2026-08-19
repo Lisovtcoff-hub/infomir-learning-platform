@@ -2,20 +2,21 @@
 
 [![CI](https://github.com/lisovcoff/infomir-learning-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/lisovcoff/infomir-learning-platform/actions/workflows/ci.yml)
 
-A server-rendered learning platform for Russian school exams, including VPR and OGE preparation. It combines study materials, practice tasks, timed exam variants, student progress tracking, teacher groups, subscriptions, and a separate administration interface.
+Server-rendered learning platform for exam-preparation workflows. The project separates public and administrative applications, supports timed attempts and subscriptions, tracks student progress, manages teacher groups, and includes billing-related back-office flows.
 
-> This repository is a portfolio project and reference implementation. It is not presented as a hosted production service.
+## Highlights
 
-## What the project does
+- student, teacher, and administrator workflows;
+- timed attempts with ownership checks, scoring, and protected solutions;
+- tariff-based access to learning content and exam variants;
+- progress tracking, teacher groups, and subscription management;
+- manual payment confirmation, commission, withdrawals, and refunds;
+- separate public and admin applications by host name;
+- regression tests for security-sensitive and billing-sensitive behavior.
 
-- supports student, teacher, and administrator workflows;
-- manages timed attempts with ownership checks, scoring, and protected solutions;
-- applies tariff-based access to learning content and exam variants;
-- tracks student progress and teacher groups;
-- supports manual payment confirmation, subscriptions, teacher commission, withdrawals, and refunds;
-- uses revocable HttpOnly cookie sessions;
-- separates public and administrative applications by host name;
-- includes regression tests for security-sensitive and billing-sensitive behavior.
+## Stack
+
+`Python 3.12` · `FastAPI` · `SQLAlchemy 2` · `Alembic` · `PostgreSQL` · `SQLite` · `PyJWT` · `Argon2` · `Pytest` · `Docker Compose`
 
 ## Architecture
 
@@ -25,21 +26,11 @@ Browser
   `-- admin host  --> admin FastAPI app  --> admin services -> database
 ```
 
-The public and admin applications share the data model but use separate hosts and session cookies. See [docs/architecture.md](docs/architecture.md).
+The public and admin applications share the same data model while keeping separate host-based entry points and session cookies.
 
-## Technology stack
+Additional notes: [architecture](docs/architecture.md), [data model](docs/data-model.md), [deployment](docs/deployment.md), [security](SECURITY.md).
 
-- Python 3.12
-- FastAPI and Uvicorn
-- SQLAlchemy 2 and Alembic
-- PostgreSQL; SQLite for local development and tests
-- Pydantic Settings
-- PyJWT, Passlib, and Argon2
-- HTML, CSS, and vanilla JavaScript
-- Pytest and GitHub Actions
-- Docker Compose
-
-## Quick start
+## Run locally
 
 ```bash
 python -m venv .venv
@@ -60,22 +51,22 @@ Useful addresses:
 - OpenAPI: `http://localhost:8000/docs`
 - health check: `http://localhost:8000/api/health`
 
-## Development and tests
+## Tests
 
 ```bash
 pytest -q
 ```
 
-The regression suite covers answer disclosure, access control, attempt ownership, tariff bypasses, exam time limits, session revocation, scoring, payment activation, teacher commission, withdrawals, refunds, and administrator credentials.
+The regression suite covers access control, answer disclosure, attempt ownership, tariff bypasses, exam time limits, session revocation, payment activation, teacher commission, withdrawals, refunds, and administrator credentials.
 
-For Docker deployment:
+For container-based development:
 
 ```bash
 cp deploy/.env.example .env
 docker compose up --build
 ```
 
-## Project structure
+## Repository layout
 
 ```text
 backend/app/       FastAPI applications, routes, models, schemas, and data access
@@ -87,21 +78,9 @@ deploy/            deployment examples
 docs/              architecture, data model, security, and deployment notes
 ```
 
-## Security and operational notes
+## Notes
 
-- Sessions are stored in HttpOnly cookies and can be revoked through a session version.
-- CI applies the complete migration chain to PostgreSQL before tests.
-- Payments are confirmed manually; a provider webhook adapter is not included.
+- This public repository excludes hosted infrastructure and third-party provider credentials.
+- Payments are confirmed manually; provider webhook integration is out of scope.
 - The built-in rate limiter is process-local and should be replaced for multi-worker deployment.
-- Email verification and password recovery require an external mail provider.
 - The interface and seeded educational content are in Russian.
-
-## Project status
-
-The project is a portfolio-oriented implementation of a multi-role learning platform. Seed data is intended only for a new development database and must not be applied over real or edited data.
-
-## Author
-
-Sergey Inozemtsev — Python backend developer
-
-GitHub: https://github.com/lisovcoff
